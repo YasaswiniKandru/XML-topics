@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="mo">
+    <xs:complexType>
+    <xs:sequence>
+        <xs:element name="customers">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="customer" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="cname" type="xs:string"/>
+                    <xs:element name="street" type="xs:string"/>
+                    <xs:element name="city" type="xs:string"/>
+                    <xs:element name="zip">
+						<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{5}"/>
+							<xs:pattern value="[0-9]{5}-[0-9]{4}"/>
+						</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+                    <xs:element name="phone">
+						<xs:simpleType>
+						<xs:restriction base="xs:string">
+							 <xs:pattern value="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
+						</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+            </xs:sequence>
+            <xs:attribute name="cno" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="1000"/>
+					  <xs:maxInclusive value="9999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+            </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        </xs:complexType>
+        </xs:element>
+		
+		<xs:element name="employees">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="employee" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="ename" type="xs:string"/>
+                    <xs:element name="city" type="xs:string"/>
+                    <xs:element name="zip">
+						<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="[0-9]{5}"/>
+							<xs:pattern value="[0-9]{5}-[0-9]{4}"/>
+						</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+                    <xs:element name="hdate" type="xs:date"/>	
+            </xs:sequence>
+            <xs:attribute name="eno" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="1000"/>
+					  <xs:maxInclusive value="9999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+            </xs:complexType>
+            </xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="parts">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="part" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="pname" type="xs:string"/>
+                    <xs:element name="qoh" type="xs:positiveInteger"/>
+                    <xs:element name="price" type="xs:decimal"/>
+                    <xs:element name="level" type="xs:positiveInteger"/>	
+            </xs:sequence>
+            <xs:attribute name="pno" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="10000"/>
+					  <xs:maxInclusive value="99999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+            </xs:complexType>
+            </xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+		
+		<xs:element name="orders">
+        <xs:complexType>
+        <xs:sequence>
+            <xs:element name="order" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+            <xs:sequence>
+                    <xs:element name="receivedDate" type="xs:date"/>
+                    <xs:element name="shippedDate" type="xs:date" minOccurs="0"/>
+                    <xs:element name="items">
+					<xs:complexType>
+					<xs:sequence>
+						<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+						<xs:sequence>
+								<xs:element name="partNumber">
+								<xs:simpleType>
+									<xs:restriction base="xs:integer">
+									  <xs:minInclusive value="10000"/>
+									  <xs:maxInclusive value="99999"/>
+									</xs:restriction>
+								</xs:simpleType>
+								</xs:element>
+								<xs:element name="quantity" type="xs:positiveInteger"/>	
+						</xs:sequence>
+						</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					</xs:complexType>
+					</xs:element>
+	
+            </xs:sequence>
+            <xs:attribute name="ono" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="1000"/>
+					  <xs:maxInclusive value="9999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="takenBy" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="1000"/>
+					  <xs:maxInclusive value="9999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="customer" use="required">
+				  <xs:simpleType>
+					<xs:restriction base="xs:integer">
+					  <xs:minInclusive value="1000"/>
+					  <xs:maxInclusive value="9999"/>
+					</xs:restriction>
+				  </xs:simpleType>
+			</xs:attribute>
+            </xs:complexType>
+            </xs:element>
+		</xs:sequence>
+		</xs:complexType>
+		</xs:element>
+		
+    </xs:sequence>
+    </xs:complexType>
+    </xs:element>
+</xs:schema>
