@@ -1,0 +1,65 @@
+1. Find the names of the classes that had at least 10 guns.
+
+let $x := doc("ships.xml")/ships
+for $c in $x/class
+where ( for $s1 in $c/ship, $s2 in $c/ship
+        where $s1/@launched = $s2/@launched and $s1/@name != $s2/@name
+        return $c/@name)
+return <class>{data($c/@name)}</class>
+
+2. Find the names of the ships that had at least 10 guns.
+
+for $x in doc("ships.xml")/ships/class
+where $x/@numGuns>9
+order by $x
+return data($x/ship/@name)
+
+3. Find the names of the ships that were sunk.
+
+for $x in doc("ships.xml")/ships/class/ship
+where $x/battle/@outcome="sunk"
+order by $x
+return data($x/@name)
+
+4.Find the names of the classes with at least 3 ships.
+
+for $x in doc("ships.xml")/ships/class
+let $i:=data(fn:count($x/ship))
+where $i>2
+order by $x
+return <class name="{data($x/@name)}"> {$i}</class>
+
+5. Find the names of the classes such that no ship of that class was in a battle.
+
+for $x in doc("ships.xml")/ships/class
+let $i:=data(fn:count($x/ship/battle))
+where $i=0
+order by $x
+return <class name="{data($x/@name)}"></class>
+
+6. Find the names of the classes that had at least two ships launched in the same year.
+
+let $x := doc("ships.xml")/ships
+for $c in $x/class
+where ( for $s1 in $c/ship, $s2 in $c/ship
+        where $s1/@launched = $s2/@launched and $s1/@name != $s2/@name
+        return $c/@name)
+return <class>{data($c/@name)}</class>
+
+7. Produce a sequence of items of the form:
+  <battle name = x>
+    <ship name = y />
+    ...
+    ...
+  <battle>
+where x is the name of a battle and y the name of a ship in the battle. There may be more than one ship element in the sequence.
+
+for $d in distinct-values(doc("ships.xml")/ships/class/ship/battle)
+order by $d
+return <battle name="{data($d)}">{
+  for $x in doc("ships.xml")/ships/class/ship
+  where $x/battle = $d
+  order by $x
+  return <ship name="{data($x/@name)}"/>
+  }</battle>
+
