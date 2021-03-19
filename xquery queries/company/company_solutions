@@ -1,0 +1,65 @@
+1. Retrieve the names and addresses of employees who work for the "Research" department.
+
+let $d:=doc("company.xml")
+let $projects := $d/companyDB/projects/project[@controllingDepartment="5"]
+for $project in $projects
+let $essn := $project/workers/worker/@essn
+for $e in $essn 
+let $emp := $d/companyDB/employees/employee[@ssn=data($e)]
+let $ename := data($emp/fname) ||" " || data($emp/minit)||" " || data($emp/lname)
+return
+ <details>
+ <pssn>{data($e)}</pssn>
+ <name>{data($ename)}</name>
+  </details>
+
+2. For every project located in "Stafford", retrieve the project number, the controlling department number, and the department’s manager’s last name, address, and birth date.
+
+let $d:=doc("company.xml")
+let $projects := $d/companyDB/projects/project[plocation="Stafford"]
+for $project in $projects
+let $manager_ssn := $d/companyDB/departments/department[@dno=data($project/@controllingDepartment)]/manager/@mssn
+let $emp:=$d/companyDB/employees/employee[@ssn=data($manager_ssn)]
+let $name := data($emp/fname) ||" " || data($emp/minit)||" " || data($emp/lname)
+return 
+<details>
+        <pnumber>{data($project/@pnumber)}</pnumber>
+        <controlling_department>{data($project/@controllingDepartment)}</controlling_department>
+        <manager>{data($name)}</manager>
+        <address>{data($emp/address)}</address>
+        <dob>{data($emp/dob)}</dob>
+</details>
+
+3. Retrieve the names of all employees who have two or more dependents.
+
+let $d:=doc("company.xml")
+for $e in doc("company.xml")/companyDB/employees/employee
+let $cnt := data(fn:count($e/dependents/dependent))
+where $cnt > 1
+let $name := data($e/fname) ||" " || data($e/minit)||" " || data($e/lname)
+return $name
+
+4. Retrieve the names of managers who have at least one dependent.
+
+let $d:=doc("company.xml")
+let $managers :=  $d/companyDB/departments/department/manager/@mssn
+for $e in $d/companyDB/employees/employee, $m in $managers
+let $x:= data(fn:count($e/dependents/dependent))
+where $x>=1 and $e/@ssn = $m
+let $ename := data($e/fname) ||" " || data($e/minit)||" " || data($e/lname)
+return $ename
+
+5. Retrieve the names of employees who work on all projects controlled by department "5"
+
+let $d:=doc("company.xml")
+let $projects := $d/companyDB/projects/project[@controllingDepartment="5"]
+for $project in $projects
+let $essn := $project/workers/worker/@essn
+for $e in $essn 
+let $emp := $d/companyDB/employees/employee[@ssn=data($e)]
+let $ename := data($emp/fname) ||" " || data($emp/minit)||" " || data($emp/lname)
+return
+ <details>
+ <pssn>{data($e)}</pssn>
+ <name>{data($ename)}</name>
+  </details>
